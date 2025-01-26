@@ -1,0 +1,57 @@
+.App {
+display: flex;
+align-items: center;
+justify-content: center;
+width: 100%;
+height: 100%;
+}
+.main{
+  display: inline;
+  width: 100%;
+  height: auto;
+}
+
+#logo{
+display: flex;
+width: auto;
+height: auto;
+}
+
+.data{
+width: 600px;
+margin-top:30px;
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+.title{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  size: 30px; 
+}
+
+.chart-container {
+  display: flex;
+  align-items: flex-end;
+  height: 200px;
+  border-bottom: 1px solid black;
+  padding-bottom: 10px;
+  gap: 10px; /* Espaçamento entre as barras */
+}
+
+.bar {
+  background-color: #4CAF50;
+  width: 30px; /* Largura fixa das barras */
+  text-align: center;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.graph{
+  display: flex;
+  justify-content: right;
+}
