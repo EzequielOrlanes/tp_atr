@@ -6,9 +6,7 @@ from datetime import datetime
 import threading
 import sqlite3
 import warnings
-
 warnings.filterwarnings("ignore", category=DeprecationWarning)
-
 # Constantes
 BROKER_ADDRESS = "localhost"
 QOS = 1
