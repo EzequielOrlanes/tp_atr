@@ -6,7 +6,7 @@ import time
 import json
 from datetime import datetime
 import requests
-
+import pytz
 # Constantes
 BROKER_ADDRESS = "localhost"
 QOS = 1
@@ -37,7 +37,9 @@ def fetch_weather_data(city):
 # Publicação inicial dos sensores
 def publish_initial_message(client, machine_id, freq_init_msg, sensors):
     while True:
-        now = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
+        brasilia_tz = pytz.timezone("America/Sao_Paulo")
+        now = datetime.now(brasilia_tz).strftime("%Y-%m-%dT%H:%M:%S%z")
+        
         init_message = {
             "machine_id": machine_id,
             "sensors": sensors
@@ -49,7 +51,8 @@ def publish_initial_message(client, machine_id, freq_init_msg, sensors):
 # Leitura e publicação de dados meteorológicos
 def read_and_publish_weather(client, machine_id, freq):
     while True:
-        now = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
+        brasilia_tz = pytz.timezone("America/Sao_Paulo")
+        now = datetime.now(brasilia_tz).strftime("%Y-%m-%dT%H:%M:%S%z")
         weather_data = fetch_weather_data(CITY)
         if weather_data:
             temperature_message = {
@@ -86,8 +89,14 @@ def main():
     threading.Thread(target=publish_initial_message, args=(client, machine_id, freq_init_msg, sensors)).start()
     threading.Thread(target=read_and_publish_weather, args=(client, machine_id, freq_weather_data)).start()
 
-    while True:
-        time.sleep(1)
+    try:
+        while True:
+            time.sleep(1)
+    except KeyboardInterrupt:
+        print("Encerrando...")
+    finally:
+        client.loop_stop()
+        client.disconnect()
 
 if __name__ == "__main__":
     main()

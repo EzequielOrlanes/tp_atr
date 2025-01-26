@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+<th className="border border-gray-300 px-4 py-2">Alerta a População</th>
+
 
 function WeatherGraph() {
   const [imageUrl, setImageUrl] = useState(null);
@@ -23,9 +25,9 @@ function WeatherGraph() {
 
   return (
     <div>
-      <h1>Gráfico de Clima</h1>
+      <h2 className='title-table'>Gráfico de Clima</h2>
       {imageUrl ? (
-        <img src={imageUrl} alt="Gráfico de Clima" width="600" />
+        <img src={imageUrl} alt="Gráfico de Clima" width="500" height="500" />
       ) : (
         <p> Carregando gráfico... </p>
       )}
