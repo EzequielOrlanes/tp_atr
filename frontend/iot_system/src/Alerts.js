@@ -29,19 +29,19 @@ const WeatherAlertsTable = () => {
 
   return (
     <div className="p-4">
-      <h2 className="title-table">Alertas</h2>
+      <h2 className="title-table" margin-bottom="50px">Alertas</h2>
       <table className="table-auto w-full border-collapse border border-gray-300">
         <thead>
           <tr className="bg-gray-100">
-            <th className="border border-gray-300 px-4 py-2">Alerta a População</th>
-            <th className="border border-gray-300 px-4 py-2">Ultima Atualização</th>
+            <th className="border border-gray-300 px-4 py-2" style={{ color:'black' }}>Alerta a População</th>
+            <th className="border border-gray-300 px-4 py-2" style={{ color:'black' }}>Última Atualização</th>
           </tr>
         </thead>
         <tbody>
           {alerts.map((alert) => (
             <tr key={alert.id}>
             <td className="border border-gray-300 px-4 py-2 text-green-500" style={{ color:'green' }}>{alert.issue}</td>
-              <td className="border border-gray-300 px-4 py-2">{new Date(alert.timestamp).toLocaleString()}</td>
+              <td className="border border-gray-300 px-4 py-2"style={{ color:'black' }}>{new Date(alert.timestamp).toLocaleString()}</td>
             </tr>
           ))}
         </tbody>
