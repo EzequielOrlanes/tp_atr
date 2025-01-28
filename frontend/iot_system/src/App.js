@@ -63,6 +63,8 @@ function WeatherData() {
          </div>
          </div>
          <div className="alerts-table"> <WeatherAlertsTable/></div>
+<div className="image"><img id="miles-logo" src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExMHViN3FnYWpneTVwdnZ4NzB4OHVqaHF1YmRxcXNzaGRqdm84ZjBnaCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/tc67RD5mlzvFTqSGUO/giphy.gif" alt="Miles Morales Smiles in a picture." ></img></div>
+    
          <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossOrigin="anonymous"></script>

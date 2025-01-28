@@ -79,22 +79,19 @@ def generate_graphs(temp_data, humidity_data):
     fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 12))
 
     # Gráfico de temperatura
-    ax1.plot(temp_timestamps, temp_values, marker='o', linestyle='-', color='r')
+    ax1.plot( temp_values, marker='o', linestyle='-', color='r')
     ax1.set_title("Sensor de Temperatura")
-    ax1.set_xlabel("Timestamp")
+    ax1.set_xlabel("Pontos de Coleta")
     ax1.set_ylabel("Temperatura (°C)")
     ax1.tick_params(axis='x', rotation=45)
-
     # Gráfico de umidade
-    ax2.plot(humidity_timestamps, humidity_values, marker='o', linestyle='-', color='b')
+    ax2.plot(humidity_values, marker='o', linestyle='-', color='b')
     ax2.set_title("Sensor de Umidade")
-    ax2.set_xlabel("Timestamp")
+    ax2.set_xlabel("Pontos de Coleta")
     ax2.set_ylabel("Umidade (%)")
     ax2.tick_params(axis='x', rotation=45)
-
     # Ajustando o layout
     plt.tight_layout()
-
     # Salvando a imagem em um objeto de memória
     img = io.BytesIO()
     plt.savefig(img, format='png')

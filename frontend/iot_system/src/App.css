@@ -10,11 +10,15 @@
   --accent: #fde68a;
   --btn-disabled: #a8a29e;
 }
+.h1{
+  font-family: 'Inter', sans-serif;
+  font-style: #082f49;
 
+}
 .main{
   font-family: 'Inter', sans-serif;
-  background: var(--dark-primary);
-  color: var(--light-primary);
+  /* background: var(--dark-primary); */
+  background-color: white;
   height: 100%; 
   display: grid;
   grid-gap: 1px;
@@ -77,12 +81,27 @@ justify-content: left;
 }
 
 .graph{
-  display: flex;
+  display: flex !important;
   justify-content: left;
+  width: 100% !important;
 }
 
 .alerts-table{
   justify-content: right;
   margin-top: 106px;
   grid-column: 3 / -1;
+}
+
+#miles-logo{
+  display: flex;
+  justify-content: right;
+  align-items: end;
+  margin-left: 1000px;
+  margin-top: 700px;
+}
+
+.image{
+  display: flex;
+  height: auto;
+  width: 100px;
 }
