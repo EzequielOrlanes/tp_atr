@@ -57,7 +57,7 @@ def save_to_database(table, data):
     elif table == "alerts":
         cursor.execute("""
             INSERT INTO alerts (issue, value, timestamp)
-            VALUES (?,?,?)
+            VALUES (?, ?, ?)
         """, (data["issue"], data["value"], data["timestamp"]))
     conn.commit()
     conn.close()
@@ -85,14 +85,18 @@ def on_message(client, userdata, msg):
     global time_last_message
     payload = json.loads(msg.payload.decode('utf-8'))
     topic_parts = msg.topic.split('/')
-    sensor_id = topic_parts[2], topic_parts[3]
+    # sensor_id = f"{topic_parts[2]}/{topic_parts[3]}"
+    machine_id, sensor_id = topic_parts[2], topic_parts[3]
     timestamp, value = payload["timestamp"], payload["value"]
     # Atualiza o tempo da última mensagem recebida
     time_last_message = time.time()
-    check_inactivity(client, value, timestamp, sensor_id)
+    #check inatividade
+    elapsed_time = time.time() - time_last_message
+    if elapsed_time > INACTIVITY_THRESHOLD:
+        check_inactivity(client, value, timestamp, sensor_id)
     # Salva os dados no banco de dados
     save_to_database("weather", {"sensor_id": sensor_id, "value": value, "timestamp": timestamp})
-    print(f"sensor_id: {sensor_id}, value: {value}, timestamp: {timestamp}")
+    # print(f"sensor_id: {sensor_id}, value: {value}, timestamp: {timestamp}")
     #Temperatura Ideal
     if sensor_id == "temperature":
         if value < TEMPERATURE_IDEAL_MAX or value > TEMPERATURE_IDEAL_MIN:
@@ -103,6 +107,7 @@ def on_message(client, userdata, msg):
                 "timestamp": timestamp
             }
             post_alert(client, alert_message)
+            time.sleep(1)
              
     # Detecta outliers de temperatura e umidade
     if sensor_id == "temperature":
@@ -114,6 +119,7 @@ def on_message(client, userdata, msg):
                 "timestamp": timestamp
             }
             post_alert(client, alert_message)
+            time.sleep(1)
     elif sensor_id == "humidity":
         if value < HUMIDITY_LOW:
             alert_message = {
@@ -123,24 +129,20 @@ def on_message(client, userdata, msg):
                 "timestamp": timestamp
             }
             post_alert(client, alert_message)
+            time.sleep(1)
+
 
 def check_inactivity(client, value, timestamp, sensor_id):
     global time_last_message
-    while True:
-        if time_last_message:
-            # elapsed_time = time.time() - time_last_message
-            elapsed_time = 70
-            issue = "[PERIGO] Inatividade detectada, os dados não estou atualizados e não são confiaveis"
-            if elapsed_time > INACTIVITY_THRESHOLD:
-                alert_message = {
-                "sensor": sensor_id,
-                "issue": issue,
-                "value": value,
-                "timestamp": timestamp    
-                }
-                post_alert(client, alert_message)
-        time.sleep(5)
-
+    issue = "[PERIGO] Inatividade detectada, os dados não estou atualizados e não são confiaveis"
+    alert_message = {
+    "sensor": sensor_id,
+    "issue": issue,
+    "value": value,
+    "timestamp": timestamp    
+    }
+    post_alert(client, alert_message)
+    time.sleep(1)
 
 def main():
     # Configura o banco de dados
