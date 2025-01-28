@@ -70,8 +70,8 @@ def read_and_publish_weather(client, machine_id, freq):
 
 def main():
     # Frequência em milissegundos
-    freq_weather_data = 10000  # 10 segundos
-    freq_init_msg = 5000  # 5 segundos
+    freq_weather_data = 60000  # 60 segundos
+    freq_init_msg = 1200000  # 120 segundos
 
     # Identificadores dos sensores
     machine_id = "weather_station"

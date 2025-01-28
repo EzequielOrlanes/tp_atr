@@ -38,7 +38,7 @@ function WeatherData() {
          </div>
      </div>
       <h2 className="title-table"> Temperatura e Umidade atual</h2>
-      <div className="data-table" > 
+      <div class="thead-light" className="data-table" > 
       <table className="table table-hover table-sm">
         <thead>
           <tr>

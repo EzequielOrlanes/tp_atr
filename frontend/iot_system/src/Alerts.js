@@ -15,13 +15,17 @@ const WeatherAlertsTable = () => {
         const response = await axios.get("http://127.0.0.1:5000/weather_alerts"); // Replace with the correct API endpoint
         setAlerts(response.data);
       } catch (err) {
-        setError("Failed to fetch alerts.");
+        const response = "[PERIGO] Inatividade detectada, os dados não estou atualizados e não são confiaveis";
       } finally {
         setLoading(false);
       }
     };
-
+    // Buscar dados imediatamente ao montar o componente
     fetchData();
+    // Configurar um intervalo para buscar os dados a cada 60 segundos
+    const interval = setInterval(fetchData, 60000);
+    // Limpar o intervalo ao desmontar o componente
+    return () => clearInterval(interval);
   }, []);
 
   if (loading) return <div>Loading...</div>;
@@ -40,7 +44,11 @@ const WeatherAlertsTable = () => {
         <tbody>
           {alerts.map((alert) => (
             <tr key={alert.id}>
-            <td className="border border-gray-300 px-4 py-2 text-green-500" style={{ color:'green' }}>{alert.issue}</td>
+            <td className="border border-gray-300 px-4 py-2 text-green-500" style={{ color:'green' }}>
+            <div class="alert alert-info">
+            {alert.issue}
+            </div>
+            </td>
               <td className="border border-gray-300 px-4 py-2"style={{ color:'black' }}>{new Date(alert.timestamp).toLocaleString()}</td>
             </tr>
           ))}
