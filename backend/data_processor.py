@@ -57,7 +57,7 @@ def save_to_database(table, data):
     elif table == "alerts":
         cursor.execute("""
             INSERT INTO alerts (issue, value, timestamp)
-            VALUES (?, ?, ?)
+            VALUES (?,?,?)
         """, (data["issue"], data["value"], data["timestamp"]))
     conn.commit()
     conn.close()
@@ -85,12 +85,11 @@ def on_message(client, userdata, msg):
     global time_last_message
     payload = json.loads(msg.payload.decode('utf-8'))
     topic_parts = msg.topic.split('/')
-    machine_id, sensor_id = topic_parts[2], topic_parts[3]
+    sensor_id = topic_parts[2], topic_parts[3]
     timestamp, value = payload["timestamp"], payload["value"]
-
     # Atualiza o tempo da última mensagem recebida
     time_last_message = time.time()
-    
+    check_inactivity(client, value, timestamp, sensor_id)
     # Salva os dados no banco de dados
     save_to_database("weather", {"sensor_id": sensor_id, "value": value, "timestamp": timestamp})
     print(f"sensor_id: {sensor_id}, value: {value}, timestamp: {timestamp}")
@@ -125,18 +124,23 @@ def on_message(client, userdata, msg):
             }
             post_alert(client, alert_message)
 
-def check_inactivity(client):
+def check_inactivity(client, value, timestamp, sensor_id):
     global time_last_message
     while True:
         if time_last_message:
-            elapsed_time = time.time() - time_last_message
+            # elapsed_time = time.time() - time_last_message
+            elapsed_time = 70
+            issue = "[PERIGO] Inatividade detectada, os dados não estou atualizados e não são confiaveis"
             if elapsed_time > INACTIVITY_THRESHOLD:
                 alert_message = {
-                    "issue": "[PERIGO] Inatividade detectada, os dados não estou atualizados e não são confiaveis",
-                    "elapsed_time": elapsed_time
+                "sensor": sensor_id,
+                "issue": issue,
+                "value": value,
+                "timestamp": timestamp    
                 }
                 post_alert(client, alert_message)
         time.sleep(5)
+
 
 def main():
     # Configura o banco de dados
@@ -150,7 +154,7 @@ def main():
     # Inscrever-se em tópicos
     client.subscribe("/sensors/#", qos=QOS)
     # Iniciar thread para detectar inatividade
-    threading.Thread(target=check_inactivity, args=(client,), daemon=True).start()
+    # threading.Thread(target=check_inactivity, args=(client,), daemon=True).start()
     # Iniciar o loop
     client.loop_start()
     try:
