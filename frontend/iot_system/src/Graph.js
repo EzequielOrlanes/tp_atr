@@ -27,7 +27,7 @@ function WeatherGraph() {
     <div>
       <h2 className='title-table'>Gráfico de Clima</h2>
       {imageUrl ? (
-        <img src={imageUrl} alt="Gráfico de Clima" width="800vw" height="800vh" />
+        <img src={imageUrl} alt="Gráfico de Clima" width="600vw" height="600vh" />
       ) : (
         <p> Carregando gráfico... </p>
       )}

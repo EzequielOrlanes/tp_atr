@@ -64,8 +64,8 @@ def save_to_database(table, data):
 
 def delete_old_records(conn, table):
     cursor = conn.cursor()
-    # Calcular o timestamp limite (2 horas atrás)
-    two_hours_ago = datetime.utcnow() - timedelta(hours=2)
+    # Calcular o timestamp limite (48 horas atrás)
+    two_hours_ago = datetime.utcnow() - timedelta(hours=48)
     timestamp_limit = two_hours_ago.strftime("%Y-%m-%d %H:%M:%S")  # Formato padrão para SQLite
     # Excluir registros antigos
     query = f"DELETE FROM {table} WHERE timestamp < ?"
@@ -85,12 +85,12 @@ def on_message(client, userdata, msg):
     global time_last_message
     payload = json.loads(msg.payload.decode('utf-8'))
     topic_parts = msg.topic.split('/')
-    # sensor_id = f"{topic_parts[2]}/{topic_parts[3]}"
     machine_id, sensor_id = topic_parts[2], topic_parts[3]
     timestamp, value = payload["timestamp"], payload["value"]
     # Atualiza o tempo da última mensagem recebida
     time_last_message = time.time()
     #check inatividade
+    # elapsed_time = 90
     elapsed_time = time.time() - time_last_message
     if elapsed_time > INACTIVITY_THRESHOLD:
         check_inactivity(client, value, timestamp, sensor_id)
@@ -156,7 +156,6 @@ def main():
     # Inscrever-se em tópicos
     client.subscribe("/sensors/#", qos=QOS)
     # Iniciar thread para detectar inatividade
-    # threading.Thread(target=check_inactivity, args=(client,), daemon=True).start()
     # Iniciar o loop
     client.loop_start()
     try:
