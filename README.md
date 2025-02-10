@@ -5,6 +5,6 @@
 <p> python run sensor_monitor.py</p>
 <p> python run api.py </p>
 
-<h2> fronted/ </h2>
+<h2> frontend/ </h2>
 <p> cd frontend/src </p>
 <p> npm start </p>
